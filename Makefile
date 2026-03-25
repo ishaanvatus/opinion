@@ -1,11 +1,12 @@
+INCDIRS=-I.
 CC=gcc
 CFLAGS=-g -Wall -Wextra -std=c99
 LDFLAGS=-lm
-SRCS=main.c
+SRCS=main.c pam.c
 BIN=main
 OBJS=$(SRCS:.c=.o)
 
-.PHONY: all clean
+.PHONY: all clean sample
 
 all: $(BIN)
 
@@ -14,5 +15,6 @@ $(BIN): $(OBJS)
 
 %.o: %.c
 	$(CC) $(FLAGS) -c -o $@ $^
+
 clean: 
-	rm $(BIN) $(OBJS) *.pam
+	rm $(BIN) $(OBJS)

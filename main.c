@@ -4,6 +4,7 @@
 #include <inttypes.h>
 #include <stdlib.h>
 #include <math.h>
+#include "pam.h"
 
 int main(int argc, char **argv)
 {
@@ -23,50 +24,23 @@ int main(int argc, char **argv)
         fprintf(stderr, "Error opening file \"%s\": \n", filename);
         return 1;
     }
-    /*
-    P7
-    WIDTH 227
-    HEIGHT 149
-    DEPTH 3
-    MAXVAL 255
-    TUPLTYPE RGB
-    ENDHDR
-    */
-    fprintf(fp, "P7\n");
-    fprintf(fp, "WIDTH %d\n", width);
-    fprintf(fp, "HEIGHT %d\n", height);
-    fprintf(fp, "DEPTH %d\n", planes);
-    fprintf(fp, "MAXVAL %d\n", maxval);
-    switch (planes) {
-        case 0:
-            fprintf(stderr, "Can't have 0 planes\n");
-            return 1;
-            break;
-        case 1:
-            fprintf(fp, "TUPLTYPE GRAYSCALE\n");
-            break;
-        case 2:
-            fprintf(fp, "TUPLTYPE GRAYSCALE_ALPHA\n");
-            break;
-        case 3:
-            fprintf(fp, "TUPLTYPE RGB\n");
-            break;
-        case 4:
-            fprintf(fp, "TUPLTYPE RGB_ALPHA\n");
-            break;
-        default:
-            fprintf(stderr, "%d planes is too many planes\n", planes);
-            return 1;
-
+    int bytes_per_pixel = bit_depth / 8;
+    size_t raster_byte_count =  (size_t) bytes_per_pixel*width*height*planes;
+    uint8_t *raster;
+    raster = malloc((size_t) raster_byte_count);
+    if (raster == NULL) {
+        fprintf(stderr, "couldn't allocate memory to raster\n");
+        return 1;
     }
-    fprintf(fp, "ENDHDR\n");
     for (int row = 0; row < height; row++) {
         for (int col = 0; col < width; col++) {
             for (int plane = 0; plane < planes; plane++) {
-                uint8_t gray = rand()%256;
-                fwrite(&gray, sizeof(gray), 1, fp);
+                int index = row*width*planes + col*planes + plane;
+                raster[index] = 0x4A5387 >> (planes - plane - 1)*bit_depth;
             }
         }
     }
+    write_pam(fp, width, height, planes, bit_depth, raster);
+    fclose(fp);
     return 0;
 }
