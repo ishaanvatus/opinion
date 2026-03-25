@@ -1,0 +1,4 @@
+- [Playwright](https://playwright.dev/)
+- [Beautiful Soup](https://www.crummy.com/software/BeautifulSoup/)
+- [Requests](https://docs.python-requests.org/en/latest/index.html)
+- [lxml.html](https://lxml.de/lxmlhtml.html)

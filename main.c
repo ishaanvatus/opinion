@@ -14,7 +14,6 @@ int main(int argc, char **argv)
     }
     char *filename = argv[5]; 
     int width, height, planes, bit_depth;
-    int maxval = ((int) pow(2, bit_depth)) - 1;
     width = atoi(argv[1]);
     height = atoi(argv[2]);
     planes = atoi(argv[3]);
