@@ -17,4 +17,4 @@ $(BIN): $(OBJS)
 	$(CC) $(FLAGS) -c -o $@ $^
 
 clean: 
-	rm $(BIN) $(OBJS)
+	rm -f $(BIN) $(OBJS) *.pam 1>/dev/null 2>&1
