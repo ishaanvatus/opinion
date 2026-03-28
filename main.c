@@ -8,16 +8,16 @@
 
 int main(int argc, char **argv)
 {
-    if (argc < 4) {
-        fprintf(stderr, "Program Usage: ./main <w> <h> <planes> <depth> <filename>\n");
-        return 1;
-    }
-    char *filename = argv[5]; 
+    struct cell {
+        :w
+    };
+    // Variable::
     int width, height, planes, bit_depth;
-    width = atoi(argv[1]);
-    height = atoi(argv[2]);
-    planes = atoi(argv[3]);
-    bit_depth = atoi(argv[4]);
+    width = 1920;
+    height = 1080;
+    planes = 3;
+    bit_depth = 8;
+
     FILE *fp = fopen(filename, "w");
     if (fp == NULL) {
         fprintf(stderr, "Error opening file \"%s\": \n", filename);
