@@ -5,19 +5,17 @@
 #include <stdlib.h>
 #include <math.h>
 #include "pam.h"
+#include "particle.h"
 
 int main(int argc, char **argv)
 {
-    struct cell {
-        :w
-    };
-    // Variable::
+    (void) argc;
     int width, height, planes, bit_depth;
     width = 1920;
     height = 1080;
     planes = 3;
     bit_depth = 8;
-
+    char *filename = "sample.pam";
     FILE *fp = fopen(filename, "w");
     if (fp == NULL) {
         fprintf(stderr, "Error opening file \"%s\": \n", filename);

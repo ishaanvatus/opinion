@@ -1,8 +1,8 @@
-INCDIRS=-I.
+INCDIRS=-Iinclude
 CC=gcc
 CFLAGS=-g -Wall -Wextra -std=c99
 LDFLAGS=-lm
-SRCS=main.c pam.c
+SRCS=main.c $(wildcard src/*.c)
 BIN=main
 OBJS=$(SRCS:.c=.o)
 
@@ -14,7 +14,7 @@ $(BIN): $(OBJS)
 	$(CC) $(LDFLAGS) -o $@ $^
 
 %.o: %.c
-	$(CC) $(FLAGS) -c -o $@ $^
+	$(CC) $(CFLAGS) $(INCDIRS) -c -o $@ $^
 
 clean: 
 	rm -f $(BIN) $(OBJS) *.pam 1>/dev/null 2>&1
