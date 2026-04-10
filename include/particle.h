@@ -1,16 +1,17 @@
 #ifndef PARTICLE_H
 #define PARTICLE_H 
 
-#define BETA 0.7 //Persistence Force i.e Neighbor Influence
-#define ALPHA 0.5 //Influence i.e Influence on Other Cells
-                  //
+#define SWARM_SIZE 600
 /*
 //  Parameters taken from IEEE 10373262, todo: use scraped data and use crossing point 
 //  (sentiment analysis, opinion turns from +ve to -ve) for reversal timestep 
 //  and total timeline of the event for total timesteps
 */
+#define BETA 0.7 //Persistence Force i.e Neighbor Influence
+#define ALPHA 0.5 //Influence i.e Influence on Other Cells
 #define REVERSAL_TIMESTEP 8
 #define TIMESTEPS 30
+
 
 enum Opinion {negative=-1, neutral=0, positive=1};
 struct Vector {
@@ -35,6 +36,5 @@ struct Swarm {
     struct Cell *current_state;
     struct Cell *next_state;
 };
-
-int swarm_to_raster(struct Swarm swarm, uint8_t *raster);
+void swarm_init();
 #endif

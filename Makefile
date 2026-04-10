@@ -3,7 +3,7 @@ CC=gcc
 CFLAGS=-g -Wall -Wextra -std=c99
 LDFLAGS=-lm
 SRCS=main.c $(wildcard src/*.c)
-BIN=main
+BIN=main 
 OBJS=$(SRCS:.c=.o)
 
 .PHONY: all clean sample
