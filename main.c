@@ -16,25 +16,24 @@ int main(int argc, char **argv)
     srand(time(NULL));
 
     struct Swarm swarm;
-    int width = 800;
-    int height = 600;
-
+    int width = 192;
+    int height = 108;
+    uint8_t *raster = malloc(width * height * 3);
+    if (raster == NULL) {
+        fprintf(stderr, "Failed to memory to raster\n");
+        return -1;
+    }
     swarm_init(&swarm, width, height);
 
-    printf("Starting Swarm Opinion Reversal Simulation...\n");
-
     for (int t = 0; t < TIMESTEPS; t++) {
-        printf("Processing Timestep: %d/%d\n", t + 1, TIMESTEPS);
-
         swarm_update(&swarm, t);
-        printf("TODO: pipe frames to ffmpeg\n");
-
+        render_swarm_to_raster(&swarm, raster);
+    
+        write_pam(stdout, width, height, 3, 8, raster);
     }
 
     free(swarm.current_state);
     free(swarm.next_state);
-
-    printf("Simulation complete.\n");
 
     return 0;
 }

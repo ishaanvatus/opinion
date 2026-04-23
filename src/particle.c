@@ -1,12 +1,10 @@
 #include <stdio.h>
 #include <stdint.h>
+#include <stdlib.h>
+#include <string.h>
 #include <inttypes.h>
 #include <math.h>
 #include "pam.h"
-#include "particle.h"
-#include <stdio.h>
-#include <stdlib.h>
-#include <math.h>
 #include "particle.h"
 
 void swarm_init(struct Swarm *s, int width, int height) {
@@ -68,3 +66,31 @@ void swarm_update(struct Swarm *s, int curr_timestep) {
     s->current_state = s->next_state;
     s->next_state = temp;
 }
+
+void render_swarm_to_raster(struct Swarm *s, uint8_t *raster)
+{
+    int width = s->width;
+    int height = s->height;
+
+    memset(raster, 255, width * height * 3);
+
+    for (int i = 0; i < SWARM_SIZE; i++) {
+        struct Cell *c = &s->current_state[i];
+        
+        int x = (int)c->position.x;
+        int y = (int)c->position.y;
+
+        if (x >= 0 && x < width && y >= 0 && y < height) {
+            int idx = (y * width + x) * 3;
+            
+            if (c->state == positive) {        // red for Support 
+                raster[idx] = 255; raster[idx+1] = 0; raster[idx+2] = 0;
+            } else if (c->state == negative) { // green for Suspicious 
+                raster[idx] = 0; raster[idx+1] = 255; raster[idx+2] = 0;
+            } else {                           // blue for Neutral 
+                raster[idx] = 0; raster[idx+1] = 0; raster[idx+2] = 255;
+            }
+        }
+    }
+}
+

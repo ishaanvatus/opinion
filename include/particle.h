@@ -1,7 +1,7 @@
 #ifndef PARTICLE_H
 #define PARTICLE_H 
 
-#define SWARM_SIZE 600
+#define SWARM_SIZE 4000
 /*
 //  Parameters taken from IEEE 10373262, todo: use scraped data and use crossing point 
 //  (sentiment analysis, opinion turns from +ve to -ve) for reversal timestep 
@@ -9,8 +9,8 @@
 */
 #define BETA 0.7 //Persistence Force i.e Neighbor Influence
 #define ALPHA 0.5 //Influence i.e Influence on Other Cells
-#define REVERSAL_TIMESTEP 8
-#define TIMESTEPS 30
+#define REVERSAL_TIMESTEP 100
+#define TIMESTEPS 400
 
 #define W_INERTIA 0.8
 #define C1_COGNITIVE 2.0
@@ -41,4 +41,5 @@ struct Swarm {
 };
 void swarm_init(struct Swarm *s, int width, int height);
 void swarm_update(struct Swarm *s, int curr_timestep);
+void render_swarm_to_raster(struct Swarm *s, uint8_t *raster);
 #endif
