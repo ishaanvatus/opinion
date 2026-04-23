@@ -12,6 +12,9 @@
 #define REVERSAL_TIMESTEP 8
 #define TIMESTEPS 30
 
+#define W_INERTIA 0.8
+#define C1_COGNITIVE 2.0
+#define C2_SOCIAL 2.0
 
 enum Opinion {negative=-1, neutral=0, positive=1};
 struct Vector {
@@ -36,5 +39,6 @@ struct Swarm {
     struct Cell *current_state;
     struct Cell *next_state;
 };
-void swarm_init();
+void swarm_init(struct Swarm *s, int width, int height);
+void swarm_update(struct Swarm *s, int curr_timestep);
 #endif
