@@ -32,6 +32,16 @@ void swarm_update(struct Swarm *s, int curr_timestep) {
     for (int i = 0; i < SWARM_SIZE; i++) {
         struct Cell *c = &s->current_state[i];
 
+        // update bests
+        double current_dist = pow(c->position.x - s->global_best.x, 2) + 
+                              pow(c->position.y - s->global_best.y, 2);
+        double best_dist =    pow(c->personal_best.x - s->global_best.x, 2) + 
+                              pow(c->personal_best.y - s->global_best.y, 2);
+        if (current_dist < best_dist) {
+            c->personal_best = c->position;
+        }
+
+        // pso
         double r1 = (double)rand() / RAND_MAX;
         double r2 = (double)rand() / RAND_MAX;
 
@@ -43,9 +53,23 @@ void swarm_update(struct Swarm *s, int curr_timestep) {
                         (C1_COGNITIVE * r1 * (c->personal_best.y - c->position.y)) + 
                         (C2_SOCIAL * r2 * (s->global_best.y - c->position.y));
 
+        // bound velocity
+        double max_v = 5.0; 
+        if (c->velocity.x > max_v) c->velocity.x = max_v;
+        if (c->velocity.x < -max_v) c->velocity.x = -max_v;
+        if (c->velocity.y > max_v) c->velocity.y = max_v;
+        if (c->velocity.y < -max_v) c->velocity.y = -max_v;
+
         c->position.x += c->velocity.x;
         c->position.y += c->velocity.y;
 
+        // bound poition
+        if (c->position.x < 0) c->position.x = 0;
+        if (c->position.x >= s->width) c->position.x = s->width - 1;
+        if (c->position.y < 0) c->position.y = 0;
+        if (c->position.y >= s->height) c->position.y = s->height - 1;
+
+        // euclidean metric
         int neighbor_sum = 0; 
         for (int j = 0; j < SWARM_SIZE; j++) {
             if (i == j) continue; 
@@ -57,9 +81,12 @@ void swarm_update(struct Swarm *s, int curr_timestep) {
         }
 
         double phi = (BETA * (int)c->state) + ((1.0 - BETA) * ALPHA * neighbor_sum);
+        
+        // swap to next state
         s->next_state[i].state = (phi > 0) ? positive : (phi < 0 ? negative : neutral);
         s->next_state[i].position = c->position;
         s->next_state[i].velocity = c->velocity;
+        s->next_state[i].personal_best = c->personal_best;
     }
 
     struct Cell *temp = s->current_state;
@@ -93,4 +120,3 @@ void render_swarm_to_raster(struct Swarm *s, uint8_t *raster)
         }
     }
 }
-
