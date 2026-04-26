@@ -63,10 +63,14 @@ class CellParticleSwarm:
         return sums
 
     def step(self):
+        fitness_fn = self._fitness_fn()
+
+        neighbor_sums = self._compute_neighbor_sums()
+        for i, p in enumerate(self.particles):
+            p.update_state(neighbor_sums[i])
+
         if self.iteration == REVERSAL_ITER:
             self._apply_reversal_flip()
-
-        fitness_fn = self._fitness_fn()
 
         for p in self.particles:
             p.update_personal_best(fitness_fn)
@@ -74,10 +78,6 @@ class CellParticleSwarm:
             p.update_position()
 
         self._update_global_best(fitness_fn)
-
-        neighbor_sums = self._compute_neighbor_sums()
-        for i, p in enumerate(self.particles):
-            p.update_state(neighbor_sums[i])
 
         self.iteration += 1
 
