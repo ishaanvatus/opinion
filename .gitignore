@@ -1,0 +1,10 @@
+*.gif
+*.png
+*.jpg
+*.jpeg
+*.jxl
+*.bmp
+*.ppm
+*.tiff
+*.pdf
+__pycache__/
