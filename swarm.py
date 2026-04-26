@@ -11,14 +11,17 @@ class CellParticleSwarm:
         n_support = int(N * INITIAL_SUPPORT)
         states    = [1 if i < n_support else 0 for i in range(N)]
         np.random.shuffle(states)
-
+        self.pos_target = np.array([POS_MAX * 0.75, POS_MAX * 0.75])
+        self.neg_target = np.array([POS_MIN + 0.25, POS_MIN + 0.25])
         self.particles   = [CellParticle(positions[i], states[i]) for i in range(N)]
         self.global_best = None
         self.iteration   = 0
+        self.reversed    = False
         self._init_global_best()
+        self.global_best = self.pos_target.copy()
 
     def _fitness_fn(self):
-        return F1 if self.iteration < REVERSAL_ITER else F2
+        return F1 if not self.reversed else F2
 
     def _init_global_best(self):
         fitness_fn = self._fitness_fn()
@@ -27,19 +30,26 @@ class CellParticleSwarm:
         best = min(self.particles, key=lambda p: p.personal_best_fitness)
         self.global_best = best.personal_best.copy()
 
+
     def _update_global_best(self, fitness_fn):
+        if self.reversed:
+            self.global_best = self.neg_target.copy()
+            return
         for p in self.particles:
             if fitness_fn(p.personal_best) < fitness_fn(self.global_best):
                 self.global_best = p.personal_best.copy()
 
     def _apply_reversal_flip(self):
+        self.reversed  = True
+        self.global_best = self.neg_target.copy()
+        for p in self.particles:
+            p.personal_best         = self.neg_target.copy()
+            p.personal_best_fitness = F2(self.neg_target)
+    
         supporters = [p for p in self.particles if p.state == 1]
         flip_n     = max(1, int(len(supporters) * FLIP_FRACTION))
-        flipped    = np.random.choice(supporters, size=flip_n, replace=False)
-        for p in flipped:
-            p.state        = -1
-            p.personal_best = np.array([POS_MIN, POS_MIN])
-        self.global_best = np.array([POS_MIN, POS_MIN])
+        for p in np.random.choice(supporters, size=flip_n, replace=False):
+            p.state = -1
 
 
     def _compute_neighbor_sums(self):
@@ -53,10 +63,10 @@ class CellParticleSwarm:
         return sums
 
     def step(self):
-        fitness_fn = self._fitness_fn()
-
         if self.iteration == REVERSAL_ITER:
             self._apply_reversal_flip()
+
+        fitness_fn = self._fitness_fn()
 
         for p in self.particles:
             p.update_personal_best(fitness_fn)
