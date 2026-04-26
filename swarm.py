@@ -40,16 +40,24 @@ class CellParticleSwarm:
                 self.global_best = p.personal_best.copy()
 
     def _apply_reversal_flip(self):
-        self.reversed  = True
+        self.reversed    = True
         self.global_best = self.neg_target.copy()
+
+        supporters = [p for p in self.particles if p.state == 1]
+        flip_n     = max(1, int(len(supporters) * FLIP_FRACTION))
+        flipped    = np.random.choice(supporters, size=flip_n, replace=False)
+
+        for p in flipped:
+            p.state                 = -1
+            p.position              = np.random.uniform(0.0, 0.3, D)
+            p.velocity              = np.random.uniform(-0.1, 0.1, D)
+            p.personal_best         = self.neg_target.copy()
+            p.personal_best_fitness = F2(self.neg_target)
+
         for p in self.particles:
             p.personal_best         = self.neg_target.copy()
             p.personal_best_fitness = F2(self.neg_target)
-    
-        supporters = [p for p in self.particles if p.state == 1]
-        flip_n     = max(1, int(len(supporters) * FLIP_FRACTION))
-        for p in np.random.choice(supporters, size=flip_n, replace=False):
-            p.state = -1
+
 
 
     def _compute_neighbor_sums(self):

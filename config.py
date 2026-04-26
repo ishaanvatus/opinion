@@ -10,7 +10,7 @@ C1 = 1.494 # cognitive learning factor
 C2 = 1.494 # social learning factor 
 
 ALPHA =  0.5 # influence weight, effect on neighbors by cell
-BETA =  0.5 # persistence force weight, effect of neighbors on cell
+BETA =  0.7 # persistence force weight, effect of neighbors on cell
 NEIGHBOR_RADIUS = 0.05
 
 FLIP_FRACTION = 0.33 # the percentage of opinion individuals that change their opinion during the reversal event
