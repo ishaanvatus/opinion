@@ -1,0 +1,32 @@
+[
+  {
+    "text": "So sad to hear the news. RIP Liu Wenzheng. Condolences to the family.",
+    "sentiment": 1,
+    "source": "/tmp/demo_thread.html",
+    "timestamp": "2026-05-22T02:25:56.140126+00:00"
+  },
+  {
+    "text": "This is fake news, he's still alive. Complete hoax.",
+    "sentiment": -1,
+    "source": "/tmp/demo_thread.html",
+    "timestamp": "2026-05-22T02:25:56.140158+00:00"
+  },
+  {
+    "text": "The official statement hasn't been released yet. Waiting for verification.",
+    "sentiment": 0,
+    "source": "/tmp/demo_thread.html",
+    "timestamp": "2026-05-22T02:25:56.140178+00:00"
+  },
+  {
+    "text": "I can't believe this tragedy. Heartbroken.",
+    "sentiment": 1,
+    "source": "/tmp/demo_thread.html",
+    "timestamp": "2026-05-22T02:25:56.140195+00:00"
+  },
+  {
+    "text": "This rumor has been debunked multiple times already.",
+    "sentiment": -1,
+    "source": "/tmp/demo_thread.html",
+    "timestamp": "2026-05-22T02:25:56.140211+00:00"
+  }
+]

@@ -102,4 +102,3 @@ def animate(frames_X, frames_S, history):
     plt.tight_layout()
     ani.save(GIF_PATH, writer="pillow", fps=GIF_FPS, dpi=120)
     print(f"Saved {GIF_PATH}")
-    plt.show()

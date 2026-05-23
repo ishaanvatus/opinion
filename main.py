@@ -1,3 +1,4 @@
+import matplotlib.pyplot as plt
 from config import T
 from swarm import CellParticleSwarm
 from visualise import plot_fig4, plot_fig5, plot_fig6, animate
@@ -20,3 +21,4 @@ plot_fig4(frames_X, frames_S)
 plot_fig5(frames_X, frames_S)
 plot_fig6(history)
 animate(frames_X, frames_S, history)
+plt.close("all")
